@@ -10,6 +10,10 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
   BETTER_AUTH_SECRET: z.string().min(1),
   BETTER_AUTH_URL: z.string().min(1),
+  AZURE_AD_CLIENT_ID: z.string().min(1),
+  AZURE_AD_CLIENT_SECRET: z.string().min(1),
+  AZURE_AD_TENANT_ID: z.string().min(1),
+  AZURE_AD_REDIRECT_URI:z.string().min(1)
 });
 
 function validateEnv() {
