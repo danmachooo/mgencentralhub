@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { HttpContext } from "../types/shared";
+import { Request, Response, NextFunction } from "express"
+import { HttpContext } from "../types/shared"
 /**
  * Wraps an asynchronous route handler to automatically
  * forward rejected promises and thrown errors to Express'
@@ -27,7 +27,6 @@ import { HttpContext } from "../types/shared";
  * @returns An Express-compatible request handler.
  */
 export const asyncHandler =
-  (fn: (http: HttpContext) => Promise<void | unknown>) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn({ req, res })).catch(next);
-  };
+	(fn: (http: HttpContext) => Promise<void | unknown>) => (req: Request, res: Response, next: NextFunction) => {
+		Promise.resolve(fn({ req, res })).catch(next)
+	}

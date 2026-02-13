@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { NotFoundError } from "../errors";
+import { Request, Response, NextFunction } from "express"
+import { NotFoundError } from "../errors"
 
 /**
  * Catch-all middleware for handling unknown routes (404).
@@ -23,12 +23,8 @@ import { NotFoundError } from "../errors";
  * @param res - Express response object.
  * @param next - Express next function used to forward the error.
  */
-export function notFoundHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const error = new NotFoundError(`Route ${req.method} ${req.path} not found`);
+export function notFoundHandler(req: Request, res: Response, next: NextFunction) {
+	const error = new NotFoundError(`Route ${req.method} ${req.path} not found`)
 
-  next(error);
+	next(error)
 }

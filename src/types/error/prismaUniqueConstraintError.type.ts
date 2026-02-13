@@ -1,4 +1,3 @@
-
 export type PrismaUniqueConstraintErrors = {
-  fields: string[];
-};
+	fields: string[]
+}

@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError"
 
 /**
  * Error representing an authentication failure.
@@ -24,13 +24,13 @@ import { AppError } from "./AppError";
  * ```
  */
 export class UnauthorizedError extends AppError {
-  /**
-   * Creates a new UnauthorizedError.
-   *
-   * @param message - Optional custom error message.
-   *                  Defaults to "Unauthorized".
-   */
-  constructor(message: string = "Unauthorized") {
-    super(401, message);
-  }
+	/**
+	 * Creates a new UnauthorizedError.
+	 *
+	 * @param message - Optional custom error message.
+	 *                  Defaults to "Unauthorized".
+	 */
+	constructor(message: string = "Unauthorized") {
+		super(401, message)
+	}
 }

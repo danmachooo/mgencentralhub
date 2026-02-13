@@ -1,4 +1,4 @@
-import type { IncomingHttpHeaders } from "http";
+import type { IncomingHttpHeaders } from "http"
 
 /**
  * Converts Node.js `IncomingHttpHeaders` into a Fetch API `Headers` object.
@@ -26,18 +26,18 @@ import type { IncomingHttpHeaders } from "http";
  * @returns A Fetch API `Headers` instance.
  */
 export function toFetchHeaders(h: IncomingHttpHeaders): Headers {
-  const out = new Headers();
+	const out = new Headers()
 
-  for (const [key, value] of Object.entries(h)) {
-    if (value == null) continue;
+	for (const [key, value] of Object.entries(h)) {
+		if (value == null) continue
 
-    if (Array.isArray(value)) {
-      // Multiple headers with the same name
-      for (const v of value) out.append(key, v);
-    } else {
-      out.set(key, value);
-    }
-  }
+		if (Array.isArray(value)) {
+			// Multiple headers with the same name
+			for (const v of value) out.append(key, v)
+		} else {
+			out.set(key, value)
+		}
+	}
 
-  return out;
+	return out
 }

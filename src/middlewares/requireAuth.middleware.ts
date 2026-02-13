@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import { toFetchHeaders } from "../helpers/shared/toFetchHeaders.helper";
-import { auth } from "../lib/auth";
+import { NextFunction, Request, Response } from "express"
+import { toFetchHeaders } from "../helpers/shared/toFetchHeaders.helper"
+import { auth } from "../lib/auth"
 /**
  * Authentication middleware that enforces a valid user session.
  *
@@ -36,27 +36,23 @@ import { auth } from "../lib/auth";
  *
  * @returns A JSON 401 response if unauthorized, otherwise calls `next()`.
  */
-export async function requireAuth(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  try {
-    // NOTE: Adjust API name if your Better Auth instance differs
-    const session = await auth.api.getSession({
-      headers: toFetchHeaders(req.headers),
-    });
+export async function requireAuth(req: Request, res: Response, next: NextFunction) {
+	try {
+		// NOTE: Adjust API name if your Better Auth instance differs
+		const session = await auth.api.getSession({
+			headers: toFetchHeaders(req.headers),
+		})
 
-    if (!session?.user?.id) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
+		if (!session?.user?.id) {
+			return res.status(401).json({ success: false, message: "Unauthorized" })
+		}
 
-    // Attach authenticated user context for downstream handlers
-    req.user = { id: session.user.id };
+		// Attach authenticated user context for downstream handlers
+		req.user = { id: session.user.id }
 
-    return next();
-  } catch {
-    // Fail closed: any error results in unauthorized
-    return res.status(401).json({ success: false, message: "Unauthorized" });
-  }
+		return next()
+	} catch {
+		// Fail closed: any error results in unauthorized
+		return res.status(401).json({ success: false, message: "Unauthorized" })
+	}
 }

@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError"
 
 /**
  * Error representing a forbidden action.
@@ -19,13 +19,13 @@ import { AppError } from "./AppError";
  * ```
  */
 export class ForbiddenError extends AppError {
-  /**
-   * Creates a new ForbiddenError.
-   *
-   * @param message - Optional custom error message.
-   *                  Defaults to "Forbidden".
-   */
-  constructor(message: string = "Forbidden") {
-    super(403, message);
-  }
+	/**
+	 * Creates a new ForbiddenError.
+	 *
+	 * @param message - Optional custom error message.
+	 *                  Defaults to "Forbidden".
+	 */
+	constructor(message: string = "Forbidden") {
+		super(403, message)
+	}
 }

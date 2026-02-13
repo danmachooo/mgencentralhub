@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError"
 
 /**
  * Error representing a resource conflict.
@@ -20,13 +20,13 @@ import { AppError } from "./AppError";
  * ```
  */
 export class ConflictError extends AppError {
-  /**
-   * Creates a new ConflictError.
-   *
-   * @param message - Optional custom error message.
-   *                  Defaults to "Resource already exists".
-   */
-  constructor(message: string = "Resource already exists") {
-    super(409, message);
-  }
+	/**
+	 * Creates a new ConflictError.
+	 *
+	 * @param message - Optional custom error message.
+	 *                  Defaults to "Resource already exists".
+	 */
+	constructor(message: string = "Resource already exists") {
+		super(409, message)
+	}
 }

@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError"
 
 /**
  * Error representing a client-side validation failure.
@@ -20,13 +20,13 @@ import { AppError } from "./AppError";
  * ```
  */
 export class ValidationError extends AppError {
-  /**
-   * Creates a new ValidationError.
-   *
-   * @param message - Optional custom error message.
-   *                  Defaults to "Validation failed".
-   */
-  constructor(message: string = "Validation failed") {
-    super(400, message);
-  }
+	/**
+	 * Creates a new ValidationError.
+	 *
+	 * @param message - Optional custom error message.
+	 *                  Defaults to "Validation failed".
+	 */
+	constructor(message: string = "Validation failed") {
+		super(400, message)
+	}
 }

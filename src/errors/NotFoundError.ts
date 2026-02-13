@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError"
 
 /**
  * Error representing a missing resource.
@@ -19,13 +19,13 @@ import { AppError } from "./AppError";
  * ```
  */
 export class NotFoundError extends AppError {
-  /**
-   * Creates a new NotFoundError.
-   *
-   * @param message - Optional custom error message.
-   *                  Defaults to "Resource not found".
-   */
-  constructor(message: string = "Resource not found") {
-    super(404, message);
-  }
+	/**
+	 * Creates a new NotFoundError.
+	 *
+	 * @param message - Optional custom error message.
+	 *                  Defaults to "Resource not found".
+	 */
+	constructor(message: string = "Resource not found") {
+		super(404, message)
+	}
 }

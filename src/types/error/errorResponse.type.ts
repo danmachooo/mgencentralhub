@@ -1,8 +1,8 @@
-import type { ErrorDetails } from "./errorDetails.type";
+import type { ErrorDetails } from "./errorDetails.type"
 
 export interface ErrorResponse {
-  success: false;
-  message: string;
-  errors?: ErrorDetails;
-  stack?: string;
+	success: false
+	message: string
+	errors?: ErrorDetails
+	stack?: string
 }
