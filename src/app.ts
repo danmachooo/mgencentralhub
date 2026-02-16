@@ -4,13 +4,16 @@ import { toNodeHandler } from "better-auth/node"
 import { auth } from "./lib/auth"
 import routes from "./routes"
 import { errorHandler, notFoundHandler } from "./middlewares"
+import { appConfig } from "./config/appConfig"
 
 const app = express()
+
+const frontendURL = appConfig.frontend.url
 
 // 1) CORS first
 app.use(
 	cors({
-		origin: "http://localhost:3000",
+		origin: frontendURL,
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],

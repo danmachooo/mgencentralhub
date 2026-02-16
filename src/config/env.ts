@@ -6,6 +6,7 @@ const envSchema = z.object({
 	BASE_URL: z.string().min(1),
 	NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
 	DATABASE_URL: z.string().min(1),
+	FRONTEND_URL: z.string().min(1),
 	BETTER_AUTH_SECRET: z.string().min(1),
 	BETTER_AUTH_URL: z.string().min(1),
 	AZURE_AD_CLIENT_ID: z.string().min(1),

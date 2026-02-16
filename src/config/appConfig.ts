@@ -42,4 +42,7 @@ export const appConfig = {
 			redirectUri: env.AZURE_AD_REDIRECT_URI,
 		},
 	},
+	frontend: {
+		url : env.FRONTEND_URL
+	}
 } as const
