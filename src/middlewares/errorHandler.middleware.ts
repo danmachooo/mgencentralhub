@@ -1,10 +1,11 @@
-import { Prisma } from "../generated/prisma/client"
-import Logger from "../utils/logger"
-import { z } from "zod"
-import { appConfig } from "../../config/appConfig"
-import { AppError } from "../errors"
-import type { ErrorResponse, ErrorDetails } from "../types/error"
-import type { ErrorRequestHandler } from "express"
+import { Prisma } from "@prisma/client"
+import { AppError } from "@/errors"
+import { ErrorDetails, ErrorResponse } from "@/types/error"
+import { appConfig } from "@/config/appConfig"
+import { ErrorRequestHandler } from "express"
+import z from "zod"
+import Logger from "@/lib/logger"
+
 
 const isDevelopment = appConfig.app.nodeEnv === "development"
 

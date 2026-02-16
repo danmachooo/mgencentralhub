@@ -1,7 +1,7 @@
 // src/server.ts
 import app from "./app"
-import Logger from "./utils/logger"
-import { appConfig } from "../config/appConfig"
+import Logger from "./lib/logger"
+import { appConfig } from "./config/appConfig"
 
 const PORT = appConfig.app.port
 
