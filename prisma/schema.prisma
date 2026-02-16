@@ -12,30 +12,40 @@ datasource db {
   provider = "postgresql"
 }
 
+// Better Auth Model
+
 model User {
-  id            String    @id
+  id            String   @id @default(uuid()) @db.Uuid
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean  @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  //Relations
+  sessions Session[]
+  accounts Account[]
+
+  profile                 UserProfile?
+  createdSystems          System[]                     @relation("SystemCreator")
+  personalSystems         PersonalSystem[]             @relation("PersonalSystemOwner")
+  favoriteSystems         UserFavoriteSystem[]
+  favoritePersonalSystems UserFavoritePersonalSystem[]
 
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(uuid()) @db.Uuid
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
   userAgent String?
-  userId    String
+  userId    String   @db.Uuid
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
@@ -44,10 +54,10 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(uuid()) @db.Uuid
   accountId             String
   providerId            String
-  userId                String
+  userId                String    @db.Uuid
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
@@ -59,12 +69,13 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
+  @@unique([providerId, accountId])
   @@index([userId])
   @@map("account")
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(uuid()) @db.Uuid
   identifier String
   value      String
   expiresAt  DateTime
@@ -73,4 +84,139 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+//System related Model
+
+enum SystemStatus {
+  ACTIVE
+  DISABLED
+  MAINTENANCE
+}
+
+enum PersonalSystemStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum UserRole {
+  ADMIN
+  EMPLOYEE
+}
+
+model System {
+  id          String       @id @default(uuid()) @db.Uuid
+  name        String
+  description String?      @db.Text
+  image       String?
+  url         String
+  status      SystemStatus @default(ACTIVE)
+
+  creatorId String @map("creator_id") @db.Uuid
+  creator   User   @relation("SystemCreator", fields: [creatorId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  departmentMap SystemDepartmentMap[]
+  favorites     UserFavoriteSystem[]
+
+  @@unique([url])
+  @@index([status])
+  @@index([creatorId])
+  @@map("systems")
+}
+
+model Department {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String
+  description String? @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  systemMap    SystemDepartmentMap[]
+  userProfiles UserProfile[]
+
+  @@unique([name])
+  @@map("departments")
+}
+
+model SystemDepartmentMap {
+  systemId     String @map("system_id") @db.Uuid
+  departmentId String @map("department_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  system     System     @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@id([systemId, departmentId])
+  @@index([departmentId])
+  @@map("system_department_map")
+}
+
+model UserProfile {
+  userId       String   @id @map("user_id") @db.Uuid
+  role         UserRole @default(EMPLOYEE)
+  departmentId String?  @map("department_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  @@index([role])
+  @@index([departmentId])
+  @@map("user_profiles")
+}
+
+model PersonalSystem {
+  id          String @id @default(uuid()) @db.Uuid
+  ownerUserId String @map("owner_user_id") @db.Uuid
+
+  name        String
+  description String?              @db.Text
+  image       String?
+  url         String
+  status      PersonalSystemStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  owner     User                         @relation("PersonalSystemOwner", fields: [ownerUserId], references: [id], onDelete: Cascade)
+  favorites UserFavoritePersonalSystem[]
+
+  @@unique([ownerUserId, url])
+  @@index([ownerUserId])
+  @@map("personal_systems")
+}
+
+model UserFavoriteSystem {
+  userId   String @map("user_id") @db.Uuid
+  systemId String @map("system_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  system System @relation(fields: [systemId], references: [id], onDelete: Cascade)
+
+  @@id([userId, systemId])
+  @@index([systemId])
+  @@map("user_favorite_systems")
+}
+
+model UserFavoritePersonalSystem {
+  userId           String @map("user_id") @db.Uuid
+  personalSystemId String @map("personal_system_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  personalSystem PersonalSystem @relation(fields: [personalSystemId], references: [id], onDelete: Cascade)
+
+  @@id([userId, personalSystemId])
+  @@index([personalSystemId])
+  @@map("user_favorite_personal_systems")
 }
