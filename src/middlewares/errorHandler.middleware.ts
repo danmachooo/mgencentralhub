@@ -58,7 +58,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 		success: false,
 		message,
 		...(errors ? { errors } : {}),
-		...(!isDevelopment && { stack: errObj.stack }),
+		...(isDevelopment && { stack: errObj.stack }),
 	}
 
 	return res.status(statusCode).json(response)
