@@ -9,7 +9,7 @@ CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'EMPLOYEE');
 
 -- CreateTable
 CREATE TABLE "user" (
-    "id" UUID NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
@@ -22,24 +22,24 @@ CREATE TABLE "user" (
 
 -- CreateTable
 CREATE TABLE "session" (
-    "id" UUID NOT NULL,
+    "id" TEXT NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
     "token" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "ipAddress" TEXT,
     "userAgent" TEXT,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "account" (
-    "id" UUID NOT NULL,
+    "id" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
     "providerId" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "accessToken" TEXT,
     "refreshToken" TEXT,
     "idToken" TEXT,
@@ -55,7 +55,7 @@ CREATE TABLE "account" (
 
 -- CreateTable
 CREATE TABLE "verification" (
-    "id" UUID NOT NULL,
+    "id" TEXT NOT NULL,
     "identifier" TEXT NOT NULL,
     "value" TEXT NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE "systems" (
     "image" TEXT,
     "url" TEXT NOT NULL,
     "status" "SystemStatus" NOT NULL DEFAULT 'ACTIVE',
-    "creator_id" UUID NOT NULL,
+    "creator_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -102,7 +102,7 @@ CREATE TABLE "system_department_map" (
 
 -- CreateTable
 CREATE TABLE "user_profiles" (
-    "user_id" UUID NOT NULL,
+    "user_id" TEXT NOT NULL,
     "role" "UserRole" NOT NULL DEFAULT 'EMPLOYEE',
     "department_id" UUID,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -114,7 +114,7 @@ CREATE TABLE "user_profiles" (
 -- CreateTable
 CREATE TABLE "personal_systems" (
     "id" UUID NOT NULL,
-    "owner_user_id" UUID NOT NULL,
+    "owner_user_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
     "image" TEXT,
@@ -128,7 +128,7 @@ CREATE TABLE "personal_systems" (
 
 -- CreateTable
 CREATE TABLE "user_favorite_systems" (
-    "user_id" UUID NOT NULL,
+    "user_id" TEXT NOT NULL,
     "system_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -137,7 +137,7 @@ CREATE TABLE "user_favorite_systems" (
 
 -- CreateTable
 CREATE TABLE "user_favorite_personal_systems" (
-    "user_id" UUID NOT NULL,
+    "user_id" TEXT NOT NULL,
     "personal_system_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

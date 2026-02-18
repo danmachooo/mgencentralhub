@@ -15,7 +15,7 @@ datasource db {
 // Better Auth Model
 
 model User {
-  id            String   @id @default(uuid()) @db.Uuid
+  id            String   @id
   name          String
   email         String
   emailVerified Boolean  @default(false)
@@ -38,14 +38,14 @@ model User {
 }
 
 model Session {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
   userAgent String?
-  userId    String   @db.Uuid
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
@@ -54,10 +54,10 @@ model Session {
 }
 
 model Account {
-  id                    String    @id @default(uuid()) @db.Uuid
+  id                    String    @id
   accountId             String
   providerId            String
-  userId                String    @db.Uuid
+  userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
@@ -75,7 +75,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id @default(uuid()) @db.Uuid
+  id         String   @id
   identifier String
   value      String
   expiresAt  DateTime
@@ -112,7 +112,7 @@ model System {
   url         String
   status      SystemStatus @default(ACTIVE)
 
-  creatorId String @map("creator_id") @db.Uuid
+  creatorId String @map("creator_id")
   creator   User   @relation("SystemCreator", fields: [creatorId], references: [id], onDelete: Restrict)
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -157,7 +157,7 @@ model SystemDepartmentMap {
 }
 
 model UserProfile {
-  userId       String   @id @map("user_id") @db.Uuid
+  userId       String   @id @map("user_id")
   role         UserRole @default(EMPLOYEE)
   departmentId String?  @map("department_id") @db.Uuid
 
@@ -174,7 +174,7 @@ model UserProfile {
 
 model PersonalSystem {
   id          String @id @default(uuid()) @db.Uuid
-  ownerUserId String @map("owner_user_id") @db.Uuid
+  ownerUserId String @map("owner_user_id")
 
   name        String
   description String?              @db.Text
@@ -194,7 +194,7 @@ model PersonalSystem {
 }
 
 model UserFavoriteSystem {
-  userId   String @map("user_id") @db.Uuid
+  userId   String @map("user_id")
   systemId String @map("system_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -208,7 +208,7 @@ model UserFavoriteSystem {
 }
 
 model UserFavoritePersonalSystem {
-  userId           String @map("user_id") @db.Uuid
+  userId           String @map("user_id")
   personalSystemId String @map("personal_system_id") @db.Uuid
 
   createdAt DateTime @default(now()) @map("created_at")
