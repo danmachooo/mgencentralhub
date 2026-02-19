@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { UserRole } from "@prisma/client";
+import { z } from "zod"
+import { UserRole } from "@prisma/client"
 
 export const createUserProfileSchema = z.object({
-    id: z.string().min(1),
-    role: z.enum(UserRole).default("EMPLOYEE"),
-    departmentId: z.uuid().min(1)
+	id: z.string().min(1),
+	role: z.enum(UserRole).default("EMPLOYEE"),
+	departmentId: z.uuid().min(1),
 })

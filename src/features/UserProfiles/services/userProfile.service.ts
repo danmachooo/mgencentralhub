@@ -7,7 +7,6 @@ export async function getUserAccessContext(user: UserIdentifier) {
 	return accessContext
 }
 
-
 export async function createUser(userProfile: CreateUserProfileInput) {
 	const profile = await createUserProfile(userProfile)
 	return profile

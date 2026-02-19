@@ -19,7 +19,7 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 		data: {
 			userId: userProfile.id,
 			role: userProfile.role,
-			departmentId: userProfile.department
-		}
+			departmentId: userProfile.department,
+		},
 	})
 }

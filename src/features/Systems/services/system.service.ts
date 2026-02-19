@@ -7,42 +7,36 @@ import { withPrismaErrorHandling } from "@/helpers/prisma"
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
 	const ctx = await getUserAccessContext(creator)
 
-
 	if (!ctx) throw new NotFoundError("User was not found.")
 
 	// return await createSystem(ctx.userId, data)
 
-	return withPrismaErrorHandling(
-		() => 
-			createSystem(ctx.userId, data),
-		{
-			entity: "System",
-			uniqueFieldLabels: {
-				name: "system name",
-				url: "system url"
-			},
-			notFoundMessage: "System not found."
-		}
-	)
+	return withPrismaErrorHandling(() => createSystem(ctx.userId, data), {
+		entity: "System",
+		uniqueFieldLabels: {
+			name: "system name",
+			url: "system url",
+		},
+	})
+}
+export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
+	return withPrismaErrorHandling(() => updateSystem(system.id, data), {
+		entity: "System",
+		uniqueFieldLabels: {
+			name: "system name",
+			url: "system url",
+		},
+		notFoundMessage: "System not found.",
+		uniqueConstraintToField: {
+			systems_url_key: "url",
+			systems_name_key: "name",
+		},
+	})
 }
 
-export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
-	const _system = await getSystem(system.id)
-
-	if (!_system) throw new NotFoundError("System was not found.")
-
-	// return await updateSystem(_system.id, data)
-
-	return withPrismaErrorHandling(
-		() =>
-			updateSystem(_system.id, data),
-		{
-			entity: "System",
-			uniqueFieldLabels: {
-				name: "system name",
-				url: "system url"
-			},
-			notFoundMessage: "System not found."
-		}
-	)
+export async function getCompanySystem(system: SystemIdentifier) {
+	return withPrismaErrorHandling(() => getSystem(system.id), {
+		entity: "System",
+		notFoundMessage: "System not found.",
+	})
 }

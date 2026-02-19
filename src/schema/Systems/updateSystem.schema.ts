@@ -6,13 +6,15 @@ export const systemIdentifierSchema = z.object({
 })
 
 export const updateSystemSchema = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1),
-	image: z.string().min(1),
-	url: z.url({
-		protocol: /^https$/,
-		error: "URL must be https.",
-	}),
-	status: z.enum(SystemStatus).default(SystemStatus.ACTIVE),
+	name: z.string().min(1).optional(),
+	description: z.string().min(1).optional(),
+	image: z.string().min(1).optional(),
+	url: z
+		.url({
+			protocol: /^https$/,
+			error: "URL must be https.",
+		})
+		.optional(),
+	status: z.enum(SystemStatus).default(SystemStatus.ACTIVE).optional(),
 	departmentIds: z.array(z.uuid()).optional(),
 })

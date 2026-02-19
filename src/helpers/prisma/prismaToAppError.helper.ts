@@ -5,45 +5,66 @@ type PrismaErrorOptions = {
 	entity?: string
 	uniqueFieldLabels?: Record<string, string>
 	notFoundMessage?: string
-
-	/**
-	 * Optional mapping when Prisma meta.target is missing (common with adapter-pg).
-	 * Key: constraint name e.g. "systems_url_key"
-	 * Value: field name e.g. "url" (or a friendly label if you want)
-	 */
 	uniqueConstraintToField?: Record<string, string>
 }
 
-export function prismaToAppError(
-	err: Prisma.PrismaClientKnownRequestError,
-	opts?: PrismaErrorOptions
-): AppError {
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null
+}
+
+function getNested(meta: unknown, path: string[]): unknown {
+	let cur: unknown = meta
+	for (const key of path) {
+		if (!isRecord(cur)) return undefined
+		cur = cur[key]
+	}
+	return cur
+}
+
+function getString(meta: unknown, path: string[]): string | undefined {
+	const v = getNested(meta, path)
+	return typeof v === "string" ? v : undefined
+}
+
+function getConstraintNameFromAdapterMeta(meta: unknown): string | undefined {
+	const fromConstraint = getString(meta, ["driverAdapterError", "cause", "constraint", "name"])
+	if (fromConstraint) return fromConstraint
+
+	const originalMessage = getString(meta, ["driverAdapterError", "cause", "originalMessage"])
+	const fromMessage = originalMessage?.match(/unique constraint "([^"]+)"/)?.[1]
+
+	return fromMessage
+}
+
+function normalizeTargetToFields(target: unknown): string[] {
+	if (Array.isArray(target)) return target.map(String)
+	if (typeof target === "string") return [target]
+	if (target != null && (typeof target === "number" || typeof target === "boolean")) return [String(target)]
+	return []
+}
+
+export function prismaToAppError(err: Prisma.PrismaClientKnownRequestError, opts?: PrismaErrorOptions): AppError {
 	const entity = opts?.entity
 	const labels = opts?.uniqueFieldLabels ?? {}
 	const constraintToField = opts?.uniqueConstraintToField ?? {}
 
 	switch (err.code) {
 		case "P2002": {
-			// 1) Try Prisma's target (works in many Prisma setups)
-			const target = err.meta?.target
-			let fields = Array.isArray(target) ? target.map(String) : target ? [String(target)] : []
+			// 1) Try Prisma's meta.target first
+			const target = (err.meta as unknown as { target?: unknown } | undefined)?.target
+			let fields = normalizeTargetToFields(target)
 
-			// 2) Adapter-PG fallback: infer field from constraint name/message
+			// Optional: if you want friendly labels instead of raw field names:
+			fields = fields.map(f => labels[f] ?? f)
+
+			// 2) adapter-pg fallback: infer field from constraint name/message
 			if (fields.length === 0) {
-				const metaAny = err.meta as any
-				const driver = metaAny?.driverAdapterError
-				const originalMessage: string | undefined = driver?.cause?.originalMessage
-				const constraintName: string | undefined = driver?.cause?.constraint?.name
+				const constraint = getConstraintNameFromAdapterMeta(err.meta)
 
-				const constraintFromMessage =
-					originalMessage?.match(/unique constraint "([^"]+)"/)?.[1]
-
-				const constraint = constraintName ?? constraintFromMessage
-
-				// If user provided mapping, use it
+				// user mapping
 				const mappedField = constraint ? constraintToField[constraint] : undefined
 
-				// Otherwise do a small best-effort inference (url/name are common)
+				// best-effort inference
 				const inferredField =
 					mappedField ??
 					(constraint?.includes("_url_") || constraint?.endsWith("_url_key")
@@ -55,21 +76,12 @@ export function prismaToAppError(
 				if (inferredField) fields = [inferredField]
 			}
 
-			// ✅ Your preferred behavior:
-			// - Message: short ("System already exists")
-			// - Details: include fields when we know them
 			const msg = entity ? `${entity} already exists` : "Resource already exists"
-
-			return new ConflictError(
-				msg,
-				fields.length ? { fields } : undefined
-			)
+			return new ConflictError(msg, fields.length ? { fields } : undefined)
 		}
 
 		case "P2025":
-			return new NotFoundError(
-				opts?.notFoundMessage ?? (entity ? `${entity} not found` : "Record not found")
-			)
+			return new NotFoundError(opts?.notFoundMessage ?? (entity ? `${entity} not found` : "Record not found"))
 
 		case "P2003":
 			return new ValidationError(
@@ -78,7 +90,9 @@ export function prismaToAppError(
 
 		case "P2014":
 			return new ValidationError(
-				entity ? `Operation violates a required relation for ${entity}` : "Operation violates a required relation"
+				entity
+					? `Operation violates a required relation for ${entity}`
+					: "Operation violates a required relation"
 			)
 
 		default:

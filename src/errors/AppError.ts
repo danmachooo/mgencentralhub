@@ -30,7 +30,7 @@ export class AppError extends Error {
 		public statusCode: number,
 		public message: string,
 		public details?: unknown,
-		public isOperational: boolean = true,
+		public isOperational: boolean = true
 	) {
 		super(message)
 
