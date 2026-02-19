@@ -1,8 +1,8 @@
 import { asyncHandler } from "@/middlewares"
-import type { HttpContext } from "@/types/shared/httpContext.type"
+import type { HttpContext } from "@/types/shared"
 import { createCompanySystem, updateCompanySystem } from "@/features/Systems/services/system.service"
 import { createSystemSchema, systemIdentifierSchema, updateSystemSchema } from "@/schema"
-import { mockCreator } from "@/helpers/shared/mockCreator.helper"
+import { mockCreator } from "@/helpers/shared"
 
 export const createCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const creator = mockCreator
