@@ -8,8 +8,8 @@ const signInSchema = z.object({
 
 const signUpSchema = signInSchema.extend({
 	name: z.string().min(1),
-	role: z.enum(["EMPLOYEE", "ADMIN"]),
-	department: z.uuid().min(1)
+	role: z.enum(UserRole).default("EMPLOYEE"),
+	departmentId: z.uuid().min(1)
 })
 
 export { signInSchema, signUpSchema }
