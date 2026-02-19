@@ -139,6 +139,17 @@ src/
     * `services/`
     * `repos/`
 
+* **File naming convention**
+
+  * Use the pattern: `<name>.<type>.ts`
+  * Examples:
+
+    * `system.controller.ts`
+    * `system.service.ts`
+    * `system.repo.ts`
+    * `help.helper.ts`
+    * `auth.middleware.ts`
+
 * **Centralized exports via `index.ts`**
 
   * `middlewares/index.ts` must export all middlewares
