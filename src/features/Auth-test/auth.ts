@@ -5,7 +5,7 @@ import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared/httpContext.type"
 import type { IncomingHttpHeaders } from "http"
 import type { UserRole } from "@prisma/client"
-import { createUser } from "@/features/UserProfiles/services/userProfile.service"
+import { createUser } from "@/features/UserProfiles/userProfile.service"
 
 type User = {
 	name: string

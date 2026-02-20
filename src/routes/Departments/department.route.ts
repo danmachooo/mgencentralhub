@@ -3,7 +3,7 @@ import {
 	getCompanyDepartmentbyIDHandler,
 	getCompanyDepartmentsHandler,
 	updateDepartmentHandler,
-} from "@/features/Departments/controller/department.controller"
+} from "@/features/Departments/department.controller"
 import { Router } from "express"
 
 const router = Router()

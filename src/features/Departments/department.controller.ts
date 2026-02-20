@@ -5,7 +5,7 @@ import {
 	getCompanyDepartmentbyID,
 	getCompanyDepartments,
 	updateCompanyDepartment,
-} from "@/features/Departments/services/department.service"
+} from "@/features/Departments/department.service"
 import { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
 import type { HttpContext } from "@/types/shared"
 import { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"

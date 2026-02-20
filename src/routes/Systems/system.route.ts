@@ -3,7 +3,7 @@ import {
 	getCompanySystemByIDHandler,
 	getCompanySystemsHandler,
 	updateCompanySystemHandler,
-} from "@/features/Systems/controllers/system.controller"
+} from "@/features/Systems/system.controller"
 import { Router } from "express"
 
 const router = Router()

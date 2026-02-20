@@ -4,7 +4,7 @@ import {
 	getDepartmentByID,
 	getDepartments,
 	updateDepartment,
-} from "@/features/Departments/repos/department.repo"
+} from "@/features/Departments/department.repo"
 import { getPrismaPagination, withPrismaErrorHandling } from "@/helpers/prisma"
 import type{ Prisma } from "@prisma/client"
 

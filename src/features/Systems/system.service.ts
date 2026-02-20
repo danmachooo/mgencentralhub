@@ -5,9 +5,9 @@ import type {
 	SystemQueryInput,
 	UpdateSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/UserProfiles/services/userProfile.service"
+import { getUserAccessContext } from "@/features/UserProfiles/userProfile.service"
 import { NotFoundError } from "@/errors"
-import { createSystem, getSystemById, getSystems, updateSystem } from "@/features/Systems/repos/system.repo"
+import { createSystem, getSystemById, getSystems, updateSystem } from "@/features/Systems/system.repo"
 import { withPrismaErrorHandling } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"

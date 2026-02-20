@@ -1,5 +1,5 @@
 import type { CreateUserProfileInput, UserIdentifier } from "@/schema"
-import { createUserProfile, getUserContext } from "@/features/UserProfiles/repos/userProfile.repo"
+import { createUserProfile, getUserContext } from "@/features/UserProfiles/userProfile.repo"
 
 export async function getUserAccessContext(user: UserIdentifier) {
 	const accessContext = await getUserContext(user)
