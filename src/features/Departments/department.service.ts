@@ -6,7 +6,7 @@ import {
 	updateDepartment,
 } from "@/features/Departments/department.repo"
 import { getPrismaPagination, withPrismaErrorHandling } from "@/helpers/prisma"
-import type{ Prisma } from "@prisma/client"
+import type { Prisma } from "@prisma/client"
 
 export async function createCompanyDepartment(data: CreateDepartmentInput) {
 	return withPrismaErrorHandling(() => createDepartment(data), {

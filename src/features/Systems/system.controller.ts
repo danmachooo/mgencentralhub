@@ -5,7 +5,7 @@ import {
 	getCompanySystems,
 	getCompanySystemByID,
 	updateCompanySystem,
-} from "@/features/Systems/services/system.service"
+} from "@/features/Systems/system.service"
 import {
 	createSystemSchema,
 	creatorIdentifierSchema,

@@ -26,6 +26,4 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 	})
 }
 
-export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {
-	
-}
+export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {}

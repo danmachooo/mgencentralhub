@@ -3,8 +3,8 @@ import cors from "cors"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "@/lib"
 import routes from "@/routes"
-import { errorHandler, notFoundHandler } from "./middlewares"
-import { appConfig } from "./config/appConfig"
+import { errorHandler, notFoundHandler } from "@/middlewares"
+import { appConfig } from "@/config/appConfig"
 
 const app = express()
 
