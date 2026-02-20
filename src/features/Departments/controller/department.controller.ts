@@ -8,6 +8,8 @@ import {
 } from "@/features/Departments/services/department.service"
 import { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
 import type { HttpContext } from "@/types/shared"
+import { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"
+import { sendPaginatedResponse } from "@/helpers/shared"
 
 export const createDepartmentHandler = asyncHandler(async (http: HttpContext) => {
 	const body = createDepartmentSchema.parse(http.req.body)
@@ -39,15 +41,13 @@ export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) =>
 })
 
 export const getCompanyDepartmentsHandler = asyncHandler(async (http: HttpContext) => {
-	const departments = await getCompanyDepartments()
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Departments has been retrieved.",
-		data: {
-			departments,
-		},
-	})
+	const query = departmentQuerySchema.parse(http.req.params)
+
+	const {departments, total} = await getCompanyDepartments(query)
+
+	return sendPaginatedResponse(http, { data: departments, total }, query, "Departments retrieved successfully")
+
 })
 
 export const getCompanyDepartmentbyIDHandler = asyncHandler(async (http: HttpContext) => {
