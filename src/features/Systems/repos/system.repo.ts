@@ -81,7 +81,7 @@ export async function isSystemExist(id: string) {
 	return !!found
 }
 
-export async function getSystem(id: string) {
+export async function getSystemById(id: string) {
 	const system = await prisma.system.findUniqueOrThrow({
 		where: {
 			id,
@@ -105,43 +105,26 @@ export async function getSystem(id: string) {
 	return system
 }
 
-export async function listActiveCompanySystemsForAdmin() {
-	return await prisma.system.findMany({
+export async function getSystems() {
+	const system = await prisma.system.findMany({
 		where: {
-			status: "ACTIVE",
+			status: "ACTIVE"
 		},
 		select: {
 			id: true,
 			name: true,
 			description: true,
+			status: true,
 			url: true,
-			image: true,
-		},
-		orderBy: {
-			name: "asc",
-		},
-	})
-}
-
-export async function listActiveCompanySystemsForDepartment(departmentId: string) {
-	return await prisma.system.findMany({
-		where: {
-			status: "ACTIVE",
+			createdAt: true,
+			updatedAt: true,
 			departmentMap: {
-				some: {
-					departmentId,
+				select: {
+					departmentId: true,
 				},
 			},
 		},
-		select: {
-			id: true,
-			name: true,
-			description: true,
-			url: true,
-			image: true,
-		},
-		orderBy: {
-			name: "asc",
-		},
 	})
+	return system
 }
+

@@ -11,7 +11,6 @@ const router = Router()
 router.use("/health", HealthRouter)
 
 router.use("/auth-test", AuthTestRouter)
-
 router.use("/systems", requireAuth, SystemRouter)
 router.use("/departments", requireAuth, DepartmentRouter)
 

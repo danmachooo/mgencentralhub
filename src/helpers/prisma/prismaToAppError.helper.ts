@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client"
 import { AppError, ConflictError, NotFoundError, ValidationError } from "@/errors"
+import { logger } from "@/lib"
 
 type PrismaErrorOptions = {
 	entity?: string
@@ -45,6 +46,7 @@ function normalizeTargetToFields(target: unknown): string[] {
 
 export function prismaToAppError(err: Prisma.PrismaClientKnownRequestError, opts?: PrismaErrorOptions): AppError {
 	const entity = opts?.entity
+	console.log("Options: ", opts)
 	const labels = opts?.uniqueFieldLabels ?? {}
 	const constraintToField = opts?.uniqueConstraintToField ?? {}
 

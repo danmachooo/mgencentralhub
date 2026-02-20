@@ -1,7 +1,7 @@
 import type { CreateSystemInput, CreatorIdentifier, SystemIdentifier, UpdateSystemInput } from "@/schema"
 import { getUserAccessContext } from "@/features/UserProfiles/services/userProfile.service"
 import { NotFoundError } from "@/errors"
-import { createSystem, getSystem, updateSystem } from "@/features/Systems/repos/system.repo"
+import { createSystem, getSystemById, getSystems, updateSystem } from "@/features/Systems/repos/system.repo"
 import { withPrismaErrorHandling } from "@/helpers/prisma"
 
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
@@ -14,7 +14,6 @@ export async function createCompanySystem(creator: CreatorIdentifier, data: Crea
 	return withPrismaErrorHandling(() => createSystem(ctx.userId, data), {
 		entity: "System",
 		uniqueFieldLabels: {
-			name: "system name",
 			url: "system url",
 		},
 	})
@@ -26,7 +25,6 @@ export async function updateCompanySystem(system: SystemIdentifier, data: Update
 			name: "system name",
 			url: "system url",
 		},
-		notFoundMessage: "System not found.",
 		uniqueConstraintToField: {
 			systems_url_key: "url",
 			systems_name_key: "name",
@@ -34,9 +32,14 @@ export async function updateCompanySystem(system: SystemIdentifier, data: Update
 	})
 }
 
-export async function getCompanySystem(system: SystemIdentifier) {
-	return withPrismaErrorHandling(() => getSystem(system.id), {
+export async function getCompanySystems() {
+	return withPrismaErrorHandling(() => getSystems(), {
+		entity: "System"
+	})
+}
+
+export async function getCompanySystemByID(system: SystemIdentifier) {
+	return withPrismaErrorHandling(() => getSystemById(system.id), {
 		entity: "System",
-		notFoundMessage: "System not found.",
 	})
 }

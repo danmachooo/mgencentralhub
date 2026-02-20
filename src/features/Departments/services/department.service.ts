@@ -1,14 +1,25 @@
 import type { CreateDepartmentInput, DepartmentIdentifier, UpdateDepartmentInput } from "@/schema"
 import { createDepartment, getDepartmentByID, getDepartments, updateDepartment } from "@/features/Departments/repos/department.repo"
+import { withPrismaErrorHandling } from "@/helpers/prisma"
 
 export async function createCompanyDepartment(data: CreateDepartmentInput) {
-	return await createDepartment(data)
+	return withPrismaErrorHandling(
+		() => createDepartment(data),
+		{
+			entity: "Department"
+		}
+	)
 }
 
 export async function updateCompanyDepartment(department: DepartmentIdentifier, data: UpdateDepartmentInput) {
 	const { id } = department
 
-	return await updateDepartment(id, data)
+	return withPrismaErrorHandling(
+		() => updateDepartment(id, data), 
+		{
+			entity: "Department",
+		}
+	)
 }
 
 export async function getCompanyDepartments() {
@@ -18,5 +29,10 @@ export async function getCompanyDepartments() {
 export async function getCompanyDepartmentbyID(department: DepartmentIdentifier) {
 	const {id} =department
 
-	return await getDepartmentByID(id)
+	return withPrismaErrorHandling(
+		() => getDepartmentByID(id),
+		{
+			entity: "Department",
+		}
+	)
 }

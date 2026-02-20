@@ -1,7 +1,8 @@
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
-import { createCompanySystem, getCompanySystem, updateCompanySystem } from "@/features/Systems/services/system.service"
+import { createCompanySystem, getCompanySystems, getCompanySystemByID, updateCompanySystem } from "@/features/Systems/services/system.service"
 import { createSystemSchema, creatorIdentifierSchema, systemIdentifierSchema, updateSystemSchema } from "@/schema"
+import { success } from "zod"
 
 export const createCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const creator = creatorIdentifierSchema.parse(http.req.user)
@@ -24,7 +25,7 @@ export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext)
 
 	const systemUpdated = await updateCompanySystem({ id }, body)
 
-	return http.res.status(201).json({
+	return http.res.status(200).json({
 		success: true,
 		message: "System has been updated.",
 		data: {
@@ -33,10 +34,24 @@ export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext)
 	})
 })
 
-export const getCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
+export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
+	const systems = await getCompanySystems();
+
+	return http.res.status(200).json({
+		success: true,
+		message: "Systems has been retrieved",
+		data: {
+			systems
+		}
+	})
+})
+
+
+
+export const getCompanySystemByIDHandler = asyncHandler(async (http: HttpContext) => {
 	const { id } = systemIdentifierSchema.parse(http.req.params)
 
-	const system = await getCompanySystem({ id })
+	const system = await getCompanySystemByID({ id })
 
 	return http.res.status(200).json({
 		success: true,
