@@ -8,17 +8,17 @@ It serves as the **single source of truth** for authentication, system access, a
 
 ### Who This Is For
 
-* Backend engineers working on Microgenesis services
-* Mobile and frontend developers consuming the API
-* DevOps engineers deploying and operating the service
+- Backend engineers working on Microgenesis services
+- Mobile and frontend developers consuming the API
+- DevOps engineers deploying and operating the service
 
 ### Key Responsibilities
 
-* User authentication and session management
-* OAuth-based login via Azure Active Directory
-* System catalog and access control
-* User-specific preferences (favorites, ownership, metadata)
-* Secure REST API for mobile and web clients
+- User authentication and session management
+- OAuth-based login via Azure Active Directory
+- System catalog and access control
+- User-specific preferences (favorites, ownership, metadata)
+- Secure REST API for mobile and web clients
 
 ---
 
@@ -39,11 +39,11 @@ It serves as the **single source of truth** for authentication, system access, a
 
 ### Prerequisites
 
-* Node.js `>= 18`
-* npm
-* PostgreSQL database (Neon or local)
-* Azure AD credentials (for OAuth)
-* Git
+- Node.js `>= 18`
+- npm
+- PostgreSQL database (Neon or local)
+- Azure AD credentials (for OAuth)
+- Git
 
 ---
 
@@ -71,11 +71,11 @@ Once received, place it at the project root:
 
 > 🔧 **Environment Variable Rules**
 >
-> * Any new environment variable must be declared in:
+> - Any new environment variable must be declared in:
+>     - `src/config/env.ts`
+>     - `src/config/appConfig.ts`
 >
->   * `src/config/env.ts`
->   * `src/config/appConfig.ts`
-> * Do **not** read directly from `process.env` outside config files
+> - Do **not** read directly from `process.env` outside config files
 
 ---
 
@@ -130,35 +130,29 @@ src/
 
 ### Structure Rules
 
-* **All features live in `src/features/`**
+- **All features live in `src/features/`**
+    - One folder per feature
+    - Each feature must include:
+        - `controllers/`
+        - `services/`
+        - `repos/`
 
-  * One folder per feature
-  * Each feature must include:
+- **File naming convention**
+    - Use the pattern: `<name>.<type>.ts`
+    - Examples:
+        - `system.controller.ts`
+        - `system.service.ts`
+        - `system.repo.ts`
+        - `help.helper.ts`
+        - `auth.middleware.ts`
 
-    * `controllers/`
-    * `services/`
-    * `repos/`
-
-* **File naming convention**
-
-  * Use the pattern: `<name>.<type>.ts`
-  * Examples:
-
-    * `system.controller.ts`
-    * `system.service.ts`
-    * `system.repo.ts`
-    * `help.helper.ts`
-    * `auth.middleware.ts`
-
-* **Centralized exports via `index.ts`**
-
-  * `middlewares/index.ts` must export all middlewares
-  * Apply the same pattern to:
-
-    * `lib/`
-    * `helpers/`
-    * `errors/`
-    * `schema/`
+- **Centralized exports via `index.ts`**
+    - `middlewares/index.ts` must export all middlewares
+    - Apply the same pattern to:
+        - `lib/`
+        - `helpers/`
+        - `errors/`
+        - `schema/`
 
 ---
 
@@ -167,23 +161,21 @@ src/
 > ⚠️ API endpoints are intentionally **not documented here yet**.
 > This section will be expanded once endpoints stabilize.
 
-* Base URL: `/api`
-* Auth: Session-based (HTTP-only cookies)
-* OAuth Provider: Azure Active Directory
+- Base URL: `/api`
+- Auth: Session-based (HTTP-only cookies)
+- OAuth Provider: Azure Active Directory
 
 ---
 
 ## Validation & Types
 
-* **All client input must be validated using Zod**
+- **All client input must be validated using Zod**
+    - Write Zod schemas for request body, params, and query
+    - Controllers must validate input before calling services
 
-  * Write Zod schemas for request body, params, and query
-  * Controllers must validate input before calling services
-
-* **TypeScript types are for internal use only**
-
-  * Use TS types/interfaces for internal contracts
-  * Do not rely on TS types for runtime validation
+- **TypeScript types are for internal use only**
+    - Use TS types/interfaces for internal contracts
+    - Do not rely on TS types for runtime validation
 
 ---
 
@@ -195,8 +187,8 @@ Create a new branch before starting work.
 
 Use **either**:
 
-* your name, or
-* the feature you are working on
+- your name, or
+- the feature you are working on
 
 ```bash
 git checkout -b your-branch
@@ -243,9 +235,9 @@ git push origin your-branch
 1. Go to the GitHub repository
 2. Create a **Pull Request** from your branch
 3. Add a short description of:
+    - What you changed
+    - Why it was needed
 
-   * What you changed
-   * Why it was needed
 4. Request review from the main developer
 
 ⚠️ **Do not merge your own PR unless explicitly approved.**
@@ -254,23 +246,23 @@ git push origin your-branch
 
 ## Testing
 
-* No testing framework is set up yet
-* Tests will be introduced once core features are stable
+- No testing framework is set up yet
+- Tests will be introduced once core features are stable
 
 ---
 
 ## Deployment
 
-* Hosting: **Render**
-* Database: **Neon (PostgreSQL)**
-* Environment variables are managed via Render dashboard
-* Prisma migrations must be applied before startup
+- Hosting: **Render**
+- Database: **Neon (PostgreSQL)**
+- Environment variables are managed via Render dashboard
+- Prisma migrations must be applied before startup
 
 ---
 
 ## Notes
 
-* REST-only architecture
-* Session-based authentication (DB-backed)
-* No API versioning yet
-* Azure AD is the only OAuth provider
+- REST-only architecture
+- Session-based authentication (DB-backed)
+- No API versioning yet
+- Azure AD is the only OAuth provider

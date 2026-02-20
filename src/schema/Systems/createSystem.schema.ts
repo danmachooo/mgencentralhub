@@ -14,5 +14,5 @@ export const createSystemSchema = z.object({
 		error: "URL must be https.",
 	}),
 	status: z.enum(SystemStatus).default(SystemStatus.ACTIVE),
-	departmentIds: z.array(z.uuid()).min(1),
+	departmentIds: z.array(z.uuid()).optional(),
 })
