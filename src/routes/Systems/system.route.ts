@@ -1,13 +1,15 @@
 import {
 	createCompanySystemHandler,
-	getCompanySystemHandler,
+	getCompanySystemByIDHandler,
+	getCompanySystemsHandler,
 	updateCompanySystemHandler,
 } from "@/features/Systems/controllers/system.controller"
 import { Router } from "express"
 
 const router = Router()
 
-router.get("/:id", getCompanySystemHandler)
+router.get("/", getCompanySystemsHandler)
+router.get("/:id", getCompanySystemByIDHandler)
 router.post("/", createCompanySystemHandler)
 router.patch("/:id", updateCompanySystemHandler)
 
